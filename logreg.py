@@ -19,8 +19,15 @@ def log_sigmoid_complement(z):
 # observed response variables y.
 def objective(x, y, w):
   z = np.dot(x, w)
-  todo()
-  # return ...
+  dudes = map((lambda a: if_else(a[1]==1,log_sigmoid(a[0]),log_sigmoid_complement(a[0]))),zip(z,y))
+
+  return reduce((lambda a,b: a+b), dudes)
+
+def if_else(condition,a,b):
+  if condition:
+    return a
+  else:
+    return b
 
 # This is the log Gaussian prior 
 def log_prior(w, alpha):
@@ -30,10 +37,12 @@ def log_prior(w, alpha):
 # conditional log probability of the data x given weights w
 # and observed response variables y.
 def grad(x, y, w):
-  todo()
-  # return ...
+  to_be_summed = map((lambda a: [sigmoid(np.dot(w,a[0])) - a[1] * l for l in a[0]]),zip(x,y))
+  return reduce((lambda a,b: map(sum, zip(a,b))),to_be_summed)
+
 
 # This is the derivative of the Gaussian prior
 def prior_grad(w, alpha):
-  todo()
-  # return ...
+  return [ (i/alpha) for i in w]
+
+
