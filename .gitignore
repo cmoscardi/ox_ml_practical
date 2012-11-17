@@ -1,4 +1,6 @@
 data
+lib
+local
 *.tar.gz
 *.pdf
 
