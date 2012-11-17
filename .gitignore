@@ -4,4 +4,4 @@ local
 *.tar.gz
 *.pdf
 *.swp
-
+*.csv
