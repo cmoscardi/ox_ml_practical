@@ -46,12 +46,8 @@ def report(w):
 # regression model.
 def experiment(cmdline_args):
   # read the data
-  data = np.genfromtxt('./data/cs-training_mod.csv', delimiter=',')
-  test_data = np.genfromtxt('./data/cs-test_mod.csv', delimiter=',')
-
-  # drop the first header row
-  data = data[1:]
-  test_data = test_data[1:]
+  data = np.genfromtxt('./data/cs-training_mod.csv', delimiter=',',skip_header=1)
+  test_data = np.genfromtxt('./data/cs-test_mod.csv', delimiter=',',skip_header=1)
 
   N, K = data.shape
   D = 1 # the target classification is the second column
