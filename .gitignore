@@ -3,5 +3,5 @@ lib
 local
 *.tar.gz
 *.pdf
-
+*.swp
 
