@@ -22,10 +22,18 @@ import scipy.optimize as op
 from logreg import *
 from util import *
 
+#for clarity
+BINARY_TRANSFORM = np.logical_and
+
+#offset of matrix indices from PDF indices
+#(for each feature)
+PDF_OFFSET = 2
 
 # These three functions are helpers for the BFGS optimiser
 last_func=0
 iterations=0
+
+
 def function(w, x, t, r): 
   global last_func
   last_func = sum(objective(x,t,w)) + log_prior(w, r)
@@ -42,6 +50,26 @@ def report(w):
   iterations += 1
 
 
+
+#function: the function to apply to the column
+#(element-wise)
+#x: the matrix of data
+#index: index of the feature we are going to transform
+#as defined by the assignment pdf file
+
+def feature_transform(matrix,index,function):
+  v = matrix[:,index-PDF_OFFSET] 
+  if function is BINARY_TRANSFORM:
+    print "this is happening"
+    w = np.zeros(len(v))+1
+    v = function(v,w)
+  else:
+    v = function(v)
+  print v
+
+  matrix[:,index-PDF_OFFSET]=v
+  return matrix  
+    
 # This is the main function for training and testing the logistic 
 # regression model.
 def experiment(cmdline_args):
@@ -66,12 +94,24 @@ def experiment(cmdline_args):
   t = training[:,D]
   tdev = development[:,D]
 
-  #################################################
-  # TODO: you should transform x, xdev, and xtest 
-  #       here...
-  #################################################
 
-  #################################################
+  # transform features in interesting ways
+  print(x[:,4])
+  print(x[:,9])
+  x=feature_transform(x,6,BINARY_TRANSFORM)
+  xdev=feature_transform(xdev,6,BINARY_TRANSFORM)
+  xtest=feature_transform(xtest,6,BINARY_TRANSFORM)
+  
+  x=feature_transform(x,11,BINARY_TRANSFORM)
+  xdev=feature_transform(xdev,11,BINARY_TRANSFORM)
+  xtest=feature_transform(xtest,11,BINARY_TRANSFORM)
+  
+  x = np.tanh(x)
+  xdev = np.tanh(xdev)
+  xtest = np.tanh(xtest)
+  print(x[:,4])
+  print(x[:,9])
+
 
   # initialise the model weights to zero
   w = np.zeros(x.shape[1], 'f')

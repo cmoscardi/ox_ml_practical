@@ -1,6 +1,9 @@
+bin
+include
 data
 lib
 local
+build
 *.tar.gz
 *.pdf
 *.swp
